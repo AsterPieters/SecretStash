@@ -1,12 +1,7 @@
 from sql import execute_query
 
-def stash_secret(website, email, secret):
-    ##### Print back #####
-    censored_secret = ''
+def stash_secret(website, account, secret):
 
-    ##### Sensor secret #####
-    for i in secret:
-        censored_secret += '*'
-
-    print(f'Creating secret: {website}, {email}, {censored_secret}')
-
+    ##### This looks unnecessary but it prevents SQL injection #####
+    insert_query = "INSERT INTO secrets (website, account, secret) VALUES (?, ?, ?)"
+    execute_query(insert_query, (website, account, secret))

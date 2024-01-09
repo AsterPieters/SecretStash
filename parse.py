@@ -12,7 +12,7 @@ def parser():
     ##### Stash #####
     stash_parser = subparsers.add_parser('stash', help='Add a secret to the SecretStash database')
     stash_parser.add_argument('website', help='Website secret is used for')
-    stash_parser.add_argument('email', help='Account secret is used for')
+    stash_parser.add_argument('account', help='Account secret is used for')
     stash_parser.add_argument('secret', help='Secret itself')
 
     ##### Unstash #####
@@ -22,7 +22,7 @@ def parser():
     args = parser.parse_args()
 
     if args.command == 'stash':
-        stash_secret(website=args.website, email=args.email, secret=args.secret)
+        stash_secret(website=args.website, account=args.account, secret=args.secret)
     elif args.command == 'unstash':
         unstash_secret(id=args.id)
     else:
