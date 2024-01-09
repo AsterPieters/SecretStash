@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-def execute_query(query, values=None):
+def execute_query(query, values=None, fetch_result=None):
     ##### Connect or create db #####
     db_path = os.path.expanduser("~/.stash")
     conn = sqlite3.connect(db_path)
@@ -11,13 +11,21 @@ def execute_query(query, values=None):
     cursor = conn.cursor()
 
     ##### Execute query #####
-    cursor.execute(query, values)
+    if values:
+        cursor.execute(query, values)
+    else:
+        cursor.execute(query)
+        
+    ##### Print results #####
+    result = cursor.fetchall()
 
     ##### Commit and close db #####
     conn.commit()
     conn.close()
 
     print("[INFO] Query executed successfully.")
+    
+    return result
 
 def initialize_db():
     ##### Initialize db #####
