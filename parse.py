@@ -5,6 +5,7 @@ import argparse
 from stash_secret import stash_secret
 from unstash_secret import unstash_secret
 from peek_stash import peek_stash
+from reveal_secret import reveal_secret
 
 def parser():
     parser = argparse.ArgumentParser(description='SecretStash')
@@ -18,10 +19,14 @@ def parser():
 
     ##### Unstash #####
     unstash_parser = subparsers.add_parser('unstash', help='Remove a secret from the SecretStash database')
-    unstash_parser.add_argument('id', help='Id of the to be removed secret')
+    unstash_parser.add_argument('id', help='Id of the secret that should be removed')
 
     ##### Peek #####
     peek_parser = subparsers.add_parser('peek', help='Show all secrets stored, censored')
+
+    ##### Reveal #####
+    reveal_parser = subparsers.add_parser('reveal', help='Show secret of chosen id, uncensored')
+    reveal_parser.add_argument('id', help='Id of secret that should be shown')
 
     args = parser.parse_args()
 
@@ -29,7 +34,9 @@ def parser():
         stash_secret(website=args.website, account=args.account, secret=args.secret)
     elif args.command == 'unstash':
         unstash_secret(id=args.id)
+    elif args.command == 'reveal':
+        reveal_secret(id=args.id)
     elif args.command == 'peek':
         peek_stash()
     else:
-        print("Invalid command. Use 'stash' or 'unstash' command.")
+        print("Invalid command. Use one -h to see the commands")

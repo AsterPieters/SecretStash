@@ -1,7 +1,7 @@
 from sql import execute_query
 
 def peek_stash():
-    result = execute_query('SELECT * FROM secrets', None, True)
+    result = execute_query('SELECT id, website, account FROM secrets', None, True)
 
     print('ID | Website | Account')
     print('----------------------------------\n')
