@@ -20,6 +20,7 @@ def parser():
     ##### Unstash #####
     unstash_parser = subparsers.add_parser('unstash', help='Remove a secret from the SecretStash database')
     unstash_parser.add_argument('id', help='Id of the secret that should be removed')
+    unstash_parser.add_argument('-f', '--force', action='store_true', help='Force delete secret')
 
     ##### Peek #####
     peek_parser = subparsers.add_parser('peek', help='Show all secrets stored, censored')
@@ -33,7 +34,7 @@ def parser():
     if args.command == 'stash':
         stash_secret(website=args.website, account=args.account, secret=args.secret)
     elif args.command == 'unstash':
-        unstash_secret(id=args.id)
+        unstash_secret(id=args.id, force_delete=args.force)
     elif args.command == 'reveal':
         reveal_secret(id=args.id)
     elif args.command == 'peek':

@@ -5,7 +5,6 @@ def execute_query(query, values=None, fetch_result=None):
     ##### Connect or create db #####
     db_path = os.path.expanduser("~/.stash")
     conn = sqlite3.connect(db_path)
-    print("[INFO] Connected to database successfully.")
 
     ##### Create cursor #####
     cursor = conn.cursor()
@@ -22,8 +21,6 @@ def execute_query(query, values=None, fetch_result=None):
     ##### Commit and close db #####
     conn.commit()
     conn.close()
-
-    print("[INFO] Query executed successfully.")
     
     return result
 
