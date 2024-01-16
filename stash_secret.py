@@ -1,6 +1,6 @@
 from sql import execute_query
 
-def stash_secret(website, account, secret, password):
+def stash_secret(website, account, secret):
 
     ##### This looks unnecessary but it prevents SQL injection #####
     insert_query = "INSERT INTO secrets (website, account, secret) VALUES (?, ?, ?)"
