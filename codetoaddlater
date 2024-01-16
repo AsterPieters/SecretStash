@@ -1,0 +1,34 @@
+def generate_key(password, salt):
+    ##### Create key for encryption #####
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt.encode('utf-8'),
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode('utf-8'))
+    key = base64.urlsafe_b64encode(key)
+    return key
+
+def encrypt():
+    ##### Generate salt and #####
+    user_provided_password = "asterpieters"
+    salt = "random_salt"
+
+    # Generate a key using PBKDF2
+    key = generate_key_from_password(user_provided_password, salt)
+
+    # Now you can use the key for encryption and decryption
+    cipher_suite = Fernet(key)
+
+    password_to_encrypt = "my_secure_password"
+
+    # Encrypt the password before storing it
+    encrypted_password = cipher_suite.encrypt(password_to_encrypt.encode('utf-8'))
+    print("Encrypted Password:", encrypted_password)
+
+def decrypt():
+    ##### Decrypt secret #####
+    decrypted_secret = cipher_suite.decrypt(encrypted_password).decode('utf-8')
+    print(decrypted_secret)
