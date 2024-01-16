@@ -1,9 +1,11 @@
 import os
 import sqlite3
 
+from settings import *
+
 def execute_query(query, values=None, fetch_result=None):
     ##### Connect to DB #####
-    db_path = os.path.expanduser("~/.secretstash/stash.db")
+    db_path = DATABASE_FILE_PATH
     conn = sqlite3.connect(db_path)
 
     ##### Create cursor #####
@@ -29,9 +31,7 @@ def initialize_db():
     print('[INFO] No stash found, creating new one.')
 
     ##### Create directory #####
-    new_dir_name = ".secretstash"
-    home_dir = os.path.expanduser("~")
-    new_dir = os.path.join(home_dir, new_dir_name)
+    new_dir = SECRET_STASH_PATH
     os.makedirs(new_dir, exist_ok=True)
 
     ##### Create & initialize db #####
