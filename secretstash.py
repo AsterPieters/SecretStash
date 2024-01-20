@@ -4,7 +4,7 @@ import os
 from settings import *
 from parse import parser
 from sql import initialize_db
-from encrypt import initialize_password, authenticate_user
+from encrypt import initialize_password
 
 def check_password():
     password_path = PASSWORD_FILE_PATH
@@ -26,10 +26,5 @@ if __name__ == "__main__":
     check_password()
     check_stash()
 
-    ##### Authenticate the user #####
-    if not authenticate_user():
-        print("[Error] Authentication failed")
-    
-    else:
-        ##### Take arguments #####
-        parser()
+    ##### Take arguments #####
+    parser()

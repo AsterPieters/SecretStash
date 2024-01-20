@@ -1,6 +1,7 @@
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives import serialization
 from cryptography.fernet import Fernet
 import secrets
 import hashlib
@@ -24,6 +25,10 @@ def initialize_password():
     string = input("Enter your master password\nAll secrets will be irrecoverable when this password is lost!\n# ")
     hashed_string, salt = hash_string(string)
 
+    ##### Create secretstash directory #####
+    new_dir = SECRET_STASH_PATH
+    os.makedirs(new_dir, exist_ok=True)
+
     ##### Create the password file #####
     with open(PASSWORD_FILE_PATH, "w") as file:
         file.write(hashed_string)
@@ -31,23 +36,51 @@ def initialize_password():
     ##### Create the salt file #####
     with open(SALT_FILE_PATH, "w") as file:
         file.write(salt)
-        
-def authenticate_user():
 
-    ##### Ask for password #####
-    user_input = input("Enter your password: ")
+def generate_key_from_password(password, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt.encode('utf-8'),
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode('utf-8'))
+    
+    ##### Serialize the key so it gets accepts by fernet #####
+    key = base64.urlsafe_b64encode(key)
+    
+    return key
 
-    ##### Get the salt #####
-    with open(SALT_FILE_PATH, "r") as file:
-        salt = file.readline()
+def encrypt_string(password, string):
 
-    ##### Get the hashed master_password #####
-    with open(PASSWORD_FILE_PATH, "r") as file:
-        hashed_master_password = file.readline()
+    ##### Generate salt #####
+    salt = "TODO"
 
-    ##### Salt and hash the user_input #####
-    salted_user_input = user_input + salt
-    hashed_user_input = hashlib.sha256(salted_user_input.encode()).hexdigest()
+    ##### Salt and generate the key  #####
+    key = generate_key_from_password(password, salt)
+    cipher_suite = Fernet(key)
 
-    ##### Compare user_input and master_password #####
-    return hashed_user_input == hashed_master_password
+    print(cipher_suite)
+    ##### Encrypt the string #####
+    encrypted_string = cipher_suite.encrypt(string.encode('utf-8'))
+
+    return encrypted_string
+
+def decrypt_string(password, encrypted_string):
+
+    if isinstance(encrypted_string, int):
+        # If encrypted_string is an integer, convert it to bytes
+        encrypted_string = encrypted_string.to_bytes((encrypted_string.bit_length() + 7) // 8, 'big')
+
+    ##### Generate salt #####
+    salt = "TODO"
+
+    ##### Salt and generate the key  #####
+    key = generate_key_from_password(password, salt)
+    cipher_suite = Fernet(key)
+    
+    decrypted_string = cipher_suite.decrypt(encrypted_string).decode('utf-8')
+
+
+    return decrypted_string
