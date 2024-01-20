@@ -11,11 +11,10 @@ def peek_stash():
         print('----------------------------------\n')
         for row in result:
             secrets += 1
-            decrypted_id = decrypt_string(password, row[0])
             decrypted_website = decrypt_string(password, row[1])
             decrypted_account = decrypt_string(password, row[2])
 
-            print(f'[{decrypted_id}] {decrypted_website} | {decrypted_account}')
+            print(f'[{row[0]}] {decrypted_website} | {decrypted_account}')
 
 
         print(f'\n{secrets} Secrets stashed\n')

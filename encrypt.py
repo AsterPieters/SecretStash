@@ -69,18 +69,14 @@ def encrypt_string(password, string):
 
 def decrypt_string(password, encrypted_string):
 
-    if isinstance(encrypted_string, int):
-        # If encrypted_string is an integer, convert it to bytes
-        encrypted_string = encrypted_string.to_bytes((encrypted_string.bit_length() + 7) // 8, 'big')
-
     ##### Generate salt #####
     salt = "TODO"
 
     ##### Salt and generate the key  #####
     key = generate_key_from_password(password, salt)
     cipher_suite = Fernet(key)
-    
     decrypted_string = cipher_suite.decrypt(encrypted_string).decode('utf-8')
 
-
     return decrypted_string
+
+
