@@ -5,6 +5,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.fernet import Fernet
 import secrets
 import hashlib
+import bcrypt
 import base64
 import os
 
@@ -41,7 +42,7 @@ def generate_key_from_password(password, salt):
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=salt.encode('utf-8'),
+        salt=salt,
         iterations=100000,
         backend=default_backend()
     )
@@ -52,31 +53,45 @@ def generate_key_from_password(password, salt):
     
     return key
 
-def encrypt_string(password, string):
+def encrypt_string(password, data):
 
     ##### Generate salt #####
-    salt = "TODO"
+    salt = bcrypt.gensalt()
 
-    ##### Salt and generate the key  #####
+    ##### Initiate dictionary #####
+    encrypted_data = {}
+
+    ##### Generate the key #####
     key = generate_key_from_password(password, salt)
     cipher_suite = Fernet(key)
 
-    print(cipher_suite)
-    ##### Encrypt the string #####
-    encrypted_string = cipher_suite.encrypt(string.encode('utf-8'))
+    ##### Loop over the data #####
+    for field, data in data.items():
 
-    return encrypted_string
+        ##### Encrypt the string #####
+        encrypted_data[field] = cipher_suite.encrypt(data.encode('utf-8'))
 
-def decrypt_string(password, encrypted_string):
+    ##### Add salt to the data #####
+    encrypted_data['salt'] = salt
 
-    ##### Generate salt #####
-    salt = "TODO"
+    return encrypted_data
+
+def decrypt_string(password, encrypted_data):
+
+    ##### Initiate dictionary #####
+    decrypted_data = {}
 
     ##### Salt and generate the key  #####
-    key = generate_key_from_password(password, salt)
+    key = generate_key_from_password(password, encrypted_data['salt'])
     cipher_suite = Fernet(key)
-    decrypted_string = cipher_suite.decrypt(encrypted_string).decode('utf-8')
 
-    return decrypted_string
+    ##### Remove the salt from the data #####
+    del encrypted_data['salt']
+
+    ##### Loop over the data #####
+    for field, data in encrypted_data.items():
+        decrypted_data[field] = cipher_suite.decrypt(data).decode('utf-8')
+
+    return decrypted_data
 
 

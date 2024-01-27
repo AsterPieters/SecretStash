@@ -6,9 +6,15 @@ def reveal_secret(id):
     if (password := authenticate_user()):
 
         ##### Print chosen Secret #####
-        result = execute_query(f'SELECT secret FROM secrets WH  ERE id={id}', None, True)
+        result = execute_query(f'SELECT secret, salt FROM secrets WHERE id={id}', None, True)
         for row in result:
-            decrypted_secret = decrypt_string(password, row[0])
-            print(f'{decrypted_secret}')
+
+            encrypted_data = {
+                    'password': row[0],
+                    'salt': row[1]
+                    }
+
+            decrypted_secret = decrypt_string(password, encrypted_data)
+            print(f"{decrypted_secret['password']}")
     else:
         return

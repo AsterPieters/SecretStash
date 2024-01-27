@@ -36,8 +36,9 @@ def initialize_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             website TEXT NOT NULL,
             account TEXT NOT NULL,
-            secret TEXT NOT NULL
-            )
+            secret TEXT NOT NULL,
+            salt TEXT NOT NULL
+    )
     ''')
 
     execute_query(query)
