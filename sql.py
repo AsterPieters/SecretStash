@@ -30,18 +30,15 @@ def initialize_db():
 
     print('[INFO] No stash found, creating new one.')
 
-    ##### Create directory #####
-    new_dir = SECRET_STASH_PATH
-    os.makedirs(new_dir, exist_ok=True)
-
     ##### Create & initialize db #####
     query = ('''
         CREATE TABLE IF NOT EXISTS secrets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             website TEXT NOT NULL,
             account TEXT NOT NULL,
-            secret TEXT NOT NULL
-            )
+            secret TEXT NOT NULL,
+            salt TEXT NOT NULL
+    )
     ''')
 
     execute_query(query)
