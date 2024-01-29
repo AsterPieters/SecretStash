@@ -1,8 +1,11 @@
 from sql import execute_query
 from authenticate import authenticate_user
-from encrypt import encrypt_string
+from encrypt import encrypt_string, create_password
 
 def stash_secret(website, account, secret, password):
+
+    if not secret:
+        secret = create_password()
 
     ##### Encrypt the data #####
     encrypted_data = encrypt_string(password, {
