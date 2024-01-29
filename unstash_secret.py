@@ -1,17 +1,12 @@
 from sql import execute_query
 from authenticate import authenticate_user
 
-def unstash_secret(id, force_delete):
+def unstash_secret(id, force_delete, password):
 
-        if (password := authenticate_user()):
-
-            if not force_delete:
-                user_input = input('Are you sure? (y/N)')
-                if user_input != 'y':
-                    return
-
-            execute_query(f'DELETE FROM secrets WHERE id={id}')
-            
-        else:
+    if not force_delete:
+        user_input = input('Are you sure? (y/N)')
+        if user_input != 'y':
             return
+
+    execute_query(f'DELETE FROM secrets WHERE id={id}')
 
