@@ -8,6 +8,8 @@ import hashlib
 import bcrypt
 import base64
 import os
+import secrets
+import string
 
 from settings import *
 
@@ -94,4 +96,8 @@ def decrypt_string(password, encrypted_data):
 
     return decrypted_data
 
-
+def create_password():
+    length = AUTO_CREATED_PASSWORD_LENGTH
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(secrets.choice(characters) for _ in range(length))
+    return password
