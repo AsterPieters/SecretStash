@@ -20,7 +20,7 @@ def parser():
     stash_parser = subparsers.add_parser('stash', help='Add a secret to the SecretStash database')
     stash_parser.add_argument('website', help='Website secret is used for')
     stash_parser.add_argument('account', help='Account secret is used for')
-    stash_parser.add_argument('secret', help='Secret itself', nargs='?', default='')
+    stash_parser.add_argument('secret', help='Secret itself, leave empty for an auto-created password', nargs='?', default='')
 
     ##### Unstash #####
     unstash_parser = subparsers.add_parser('unstash', help='Remove a secret from the SecretStash database')
