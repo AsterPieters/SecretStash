@@ -10,10 +10,11 @@ from authenticate import authenticate_user
 
 def parser():
     parser = argparse.ArgumentParser(description='SecretStash')
-    subparsers = parser.add_subparsers(dest='command',help='Command to perform')
 
     ##### Password #####
-    parser.add_argument('--password', default=False, help='Add the masterpassword to the command')
+    parser.add_argument('--password', '-p',default=False, help='Authenticate with password')
+    
+    subparsers = parser.add_subparsers(dest='command',help='Command to perform')
 
     ##### Stash #####
     stash_parser = subparsers.add_parser('stash', help='Add a secret to the SecretStash database')
@@ -35,6 +36,7 @@ def parser():
 
     args = parser.parse_args()
 
+    ##### Authenticate the user before calling the functions #####
     if authenticate_user(args.password):
 
         if args.command == 'stash':

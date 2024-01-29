@@ -5,22 +5,26 @@ from settings import *
 
 def authenticate_user(password):
 
-    ##### Get the salt #####
-    with open(SALT_FILE_PATH, "r") as file:
-        salt = file.readline()
+    if password:
+        ##### Get the salt #####
+        with open(SALT_FILE_PATH, "r") as file:
+            salt = file.readline()
 
-    ##### Get the hashed master_password #####
-    with open(PASSWORD_FILE_PATH, "r") as file:
-        hashed_master_password = file.readline()
+        ##### Get the hashed master_password #####
+        with open(PASSWORD_FILE_PATH, "r") as file:
+            hashed_master_password = file.readline()
 
-    ##### Salt and hash the user_input #####
-    salted_password = str(password) + str(salt)
-    hashed_password = hashlib.sha256(salted_password.encode()).hexdigest()
+        ##### Salt and hash the user_input #####
+        salted_password = str(password) + str(salt)
+        hashed_password = hashlib.sha256(salted_password.encode()).hexdigest()
 
-    ##### Compare user_input and master_password #####
-    if hashed_password == hashed_master_password:
-        return password
-    
+        ##### Compare user_input and master_password #####
+        if hashed_password == hashed_master_password:
+            return password
+        
+        else:
+            print("Password incorrect.")
+            return False
+
     else:
-        print("Password incorrect.")
-        return False
+        print("Usage: secretstash --password PASSWORD COMMAND")
