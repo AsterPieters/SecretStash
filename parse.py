@@ -9,6 +9,7 @@ from reveal_secret import reveal_secret
 from authenticate import authenticate_user
 
 def parser():
+
     parser = argparse.ArgumentParser(description='SecretStash')
 
     ##### Password #####
