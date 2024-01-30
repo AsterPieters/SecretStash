@@ -6,6 +6,7 @@ from parse import parser
 from sql import initialize_db
 from encrypt import initialize_password
 from authenticate import authenticate_user
+from gui.loginpage import *
 
 def check_password():
     password_path = PASSWORD_FILE_PATH
@@ -22,10 +23,18 @@ def check_stash():
 
 ##### Main loop #####
 if __name__ == "__main__":
-    
+
     ##### Check if password & stash exists ####
     check_password()
     check_stash()
 
+    ##### Loginpage #####
+    app = QApplication(sys.argv)
+    window = LoginPage()
+    sys.exit(app.exec_())
+
+    ##### MainPage #####
+    
+
     ##### Take arguments #####
-    parser()
+    #parser()
