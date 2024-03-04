@@ -27,4 +27,10 @@ def authenticate_user(password):
             return False
 
     else:
-        print("Usage: secretstash --password PASSWORD COMMAND")
+        print("Usage: secretstash PASSWORD COMMAND")
+
+def ask_password(): ##### Ask password if user did not provide #####
+
+    password = input("Password: ")
+    return password
+

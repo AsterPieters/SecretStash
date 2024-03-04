@@ -10,6 +10,7 @@ import base64
 import os
 import secrets
 import string
+import getpass as gp
 
 from settings import *
 
@@ -25,7 +26,7 @@ def hash_string(string):
 
 def initialize_password():
     ##### Ask master password from user #####
-    string = input("Enter your master password\nAll secrets will be irrecoverable when this password is lost!\n# ")
+    string = gp.getpass("Enter your master password\nYour secrets will be irrecoverable when this password is lost!\n# ")
     hashed_string, salt = hash_string(string)
 
     ##### Create secretstash directory #####

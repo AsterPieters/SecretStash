@@ -1,18 +1,19 @@
 ##### Imports #####
 import argparse
+import getpass as gp
 
 ##### Custom modules #####
 from stash_secret import stash_secret
 from unstash_secret import unstash_secret
 from peek_stash import peek_stash
 from reveal_secret import reveal_secret
-from authenticate import authenticate_user
+from authenticate import authenticate_user, ask_password
 
 def parser():
     parser = argparse.ArgumentParser(description='SecretStash')
 
     ##### Password #####
-    parser.add_argument('--password', '-p',default=False, help='Authenticate with password')
+    parser.add_argument('--password', '-p',default=gp.getpass(), help='Authenticate with password')
     
     subparsers = parser.add_subparsers(dest='command',help='Command to perform')
 
