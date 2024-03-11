@@ -1,6 +1,5 @@
 from sql import execute_query
 from encrypt import decrypt_string
-from authenticate import authenticate_user
 
 def peek_stash(password):
 

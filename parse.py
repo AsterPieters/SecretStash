@@ -1,19 +1,18 @@
 ##### Imports #####
 import argparse
-import getpass as gp
 
 ##### Custom modules #####
 from stash_secret import stash_secret
 from unstash_secret import unstash_secret
 from peek_stash import peek_stash
 from reveal_secret import reveal_secret
-from authenticate import authenticate_user, ask_password
+from authenticate import ask_password, check_password
 
 def parser():
     parser = argparse.ArgumentParser(description='SecretStash')
 
     ##### Password #####
-    parser.add_argument('--password', '-p',default=gp.getpass(), help='Authenticate with password')
+    parser.add_argument('--password', '-p',default=False, help='Authenticate with password')
     
     subparsers = parser.add_subparsers(dest='command',help='Command to perform')
 
@@ -37,16 +36,32 @@ def parser():
 
     args = parser.parse_args()
 
-    ##### Authenticate the user before calling the functions #####
-    if authenticate_user(args.password):
+    # Filter out the functions that need authentication
+    if args.command in ('stash', 'unstash', 'reveal', 'peek'):
 
-        if args.command == 'stash':
+        # Authenticate the user
+        if args.password == False:    
+            # By prompt
+            args.password = ask_password()
+        
+        else:
+            # By flag
+            args.password = check_password(args.password)
+
+        # Return if user is not succesfully authenticated
+        if not args.password:
+            return
+
+        elif args.command == 'stash':
             stash_secret(website=args.website, account=args.account, secret=args.secret, password=args.password)
+        
         elif args.command == 'unstash':
             unstash_secret(id=args.id, force_delete=args.force, password=args.password)
+      
         elif args.command == 'reveal':
             reveal_secret(id=args.id, password=args.password)
+        
         elif args.command == 'peek':
             peek_stash(password=args.password)
-        else:
-            print("Invalid command. Use one -h to see the commands")
+    else:
+        print("Invalid command. Use one -h to see the commands")
