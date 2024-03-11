@@ -1,5 +1,4 @@
 from sql import execute_query
-from authenticate import authenticate_user
 from encrypt import encrypt_string, create_password
 
 def stash_secret(website, account, secret, password):

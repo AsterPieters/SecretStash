@@ -1,5 +1,4 @@
 from sql import execute_query
-from authenticate import authenticate_user
 
 def unstash_secret(id, force_delete, password):
 

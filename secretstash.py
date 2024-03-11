@@ -5,7 +5,6 @@ from settings import *
 from parse import parser
 from sql import initialize_db
 from encrypt import initialize_password
-from authenticate import authenticate_user
 
 def check_password():
     password_path = PASSWORD_FILE_PATH
