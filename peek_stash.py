@@ -26,3 +26,20 @@ def peek_stash(password):
 
 
     print(f'\n{secrets} Secrets stashed\n')
+
+def show_entry_by_id(password, id):
+    
+    result = execute_query(f'SELECT id, website, account, salt FROM secrets WHERE id={id}', None, True)
+
+    for row in result:
+        ##### Put the data in a dictionary #####
+        encrypted_data = {
+            'website': row[1],
+            'account': row[2],
+            'salt': row[3]
+            }
+
+        ##### Decrypt the data #####
+        decrypted_data = decrypt_string(password, encrypted_data)
+
+        print(f"\n[{row[0]}] {decrypted_data['website']} | {decrypted_data['account']}")
