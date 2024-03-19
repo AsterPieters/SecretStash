@@ -2,10 +2,10 @@
 import argparse
 
 ##### Custom modules #####
-from stash_secret import stash_secret
-from unstash_secret import unstash_secret
-from peek_stash import peek_stash
-from reveal_secret import reveal_secret
+from cli.stash_secret import stash_secret
+from cli.unstash_secret import unstash_secret
+from cli.peek_stash import peek_stash
+from cli.reveal_secret import reveal_secret
 from authenticate import ask_password, check_password
 
 def parser():

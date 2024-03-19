@@ -42,4 +42,4 @@ def show_entry_by_id(password, id):
         ##### Decrypt the data #####
         decrypted_data = decrypt_string(password, encrypted_data)
 
-        print(f"\n[{row[0]}] {decrypted_data['website']} | {decrypted_data['account']}")
+        print(f"\n[{row[0]}] {decrypted_data['website']} | {decrypted_data['account']}\n")
